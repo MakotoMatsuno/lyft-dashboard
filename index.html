@@ -8,67 +8,33 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f0f2f7; color: #1a1a2e; min-height: 100vh; }
-
-  header {
-    background: #fff;
-    border-bottom: 1px solid #dde1ea;
-    padding: 18px 32px;
-    display: flex; align-items: center; gap: 16px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-  }
+  header { background: #fff; border-bottom: 1px solid #dde1ea; padding: 18px 32px; display: flex; align-items: center; gap: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
   header h1 { font-size: 22px; font-weight: 800; letter-spacing: 2px; color: #1a1a2e; }
   header .badge { background: #2563eb; color: #fff; font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 600; }
   .header-sub { color: #666; font-size: 13px; }
-  .header-right { margin-left: auto; font-size: 12px; color: #aaa; }
-
-  /* 性別タブ */
-  .gender-bar {
-    display: flex; gap: 4px; padding: 14px 32px 0;
-    border-bottom: 2px solid #dde1ea;
-    background: #fff;
-  }
-  .gtab {
-    padding: 7px 22px; border-radius: 8px 8px 0 0; cursor: pointer;
-    font-size: 13px; font-weight: 600; color: #888;
-    border: 1px solid transparent; border-bottom: none; transition: all .15s;
-  }
+  .updated { margin-left: auto; font-size: 11px; color: #aaa; }
+  .gender-bar { display: flex; gap: 4px; padding: 14px 32px 0; border-bottom: 2px solid #dde1ea; background: #fff; }
+  .gtab { padding: 7px 22px; border-radius: 8px 8px 0 0; cursor: pointer; font-size: 13px; font-weight: 600; color: #888; border: 1px solid transparent; border-bottom: none; transition: all .15s; }
   .gtab.active { background: #f0f2f7; color: #2563eb; border-color: #dde1ea; border-bottom-color: #f0f2f7; }
   .gtab:hover:not(.active) { color: #444; }
-
-  /* 週セレクター */
-  .week-selector {
-    background: #fff; border-bottom: 1px solid #dde1ea;
-    padding: 12px 32px; display: flex; align-items: center; gap: 10px;
-  }
+  .week-selector { background: #fff; border-bottom: 1px solid #dde1ea; padding: 12px 32px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
   .week-selector .label { font-size: 12px; color: #888; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-right: 4px; }
-  .wbtn {
-    padding: 6px 16px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 600;
-    border: 1.5px solid #dde1ea; background: #fff; color: #555; transition: all .15s;
-  }
+  .wbtn { padding: 6px 16px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 600; border: 1.5px solid #dde1ea; background: #fff; color: #555; transition: all .15s; }
   .wbtn:hover:not(.active) { border-color: #2563eb; color: #2563eb; }
   .wbtn.active { background: #2563eb; border-color: #2563eb; color: #fff; }
   .latest-badge { font-size: 10px; background: #dcfce7; color: #16a34a; border-radius: 10px; padding: 1px 6px; margin-left: 4px; font-weight: 700; vertical-align: middle; }
-
   .main { padding: 24px 32px; max-width: 1400px; }
-
-  /* KPI */
   .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
   .kpi { background: #fff; border: 1px solid #dde1ea; border-radius: 14px; padding: 20px 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
   .kpi .label { font-size: 11px; color: #888; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; font-weight: 600; }
   .kpi .value { font-size: 28px; font-weight: 800; color: #1a1a2e; }
   .kpi .change { font-size: 12px; margin-top: 6px; font-weight: 600; }
-  .kpi .change.up { color: #16a34a; }
-  .kpi .change.down { color: #dc2626; }
-  .kpi .change.neutral { color: #aaa; }
-
-  /* グラフ */
+  .kpi .change.up { color: #16a34a; } .kpi .change.down { color: #dc2626; } .kpi .change.neutral { color: #aaa; }
   .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
   .chart-grid.wide { grid-template-columns: 1fr; }
   .card { background: #fff; border: 1px solid #dde1ea; border-radius: 14px; padding: 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
   .card h3 { font-size: 12px; color: #888; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px; font-weight: 700; }
   .card canvas { max-height: 280px; }
-
-  /* テーブル */
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
   th { text-align: right; padding: 9px 12px; color: #888; font-weight: 700; border-bottom: 2px solid #e8eaf0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
   th:first-child { text-align: left; }
@@ -76,33 +42,25 @@
   td:first-child { text-align: left; color: #333; font-weight: 700; }
   tr:hover td { background: #f7f9fc; }
   .total-row td { color: #1a1a2e; font-weight: 800; border-top: 2px solid #dde1ea; border-bottom: none; background: #f7f9fc; }
-  .num-store { color: #2563eb; font-weight: 600; }
-  .num-ec    { color: #7c3aed; font-weight: 600; }
-  .num-total { color: #059669; font-weight: 700; }
+  .num-store { color: #2563eb; font-weight: 600; } .num-ec { color: #7c3aed; font-weight: 600; } .num-total { color: #059669; font-weight: 700; }
 </style>
 </head>
 <body>
-
 <header>
   <h1>LYFT</h1>
   <span class="badge">WEEKLY</span>
   <span class="header-sub">週次売上ダッシュボード</span>
-  <span class="header-right">2026シーズン</span>
+  <span class="updated">最終更新: 2026-04-20 14:49</span>
 </header>
-
-<!-- 性別タブ -->
 <div class="gender-bar">
   <div class="gtab active" onclick="setGender('Total')">Total</div>
   <div class="gtab" onclick="setGender('M')">Mens</div>
   <div class="gtab" onclick="setGender('W')">Womens</div>
 </div>
-
-<!-- 週セレクター -->
 <div class="week-selector">
   <span class="label">週</span>
-  <div id="weekBtns"></div>
+  <div id="weekBtns" style="display:flex;gap:8px;flex-wrap:wrap"></div>
 </div>
-
 <div class="main">
   <div class="kpi-row">
     <div class="kpi"><div class="label">店舗売上</div><div class="value" id="kpi-store">—</div><div class="change" id="kpi-store-chg"></div></div>
@@ -110,238 +68,119 @@
     <div class="kpi"><div class="label">合計売上</div><div class="value" id="kpi-total">—</div><div class="change" id="kpi-total-chg"></div></div>
     <div class="kpi"><div class="label">対象週</div><div class="value" id="kpi-period" style="font-size:16px;padding-top:4px">—</div><div class="change neutral" id="kpi-season"></div></div>
   </div>
-
   <div class="chart-grid">
-    <div class="card">
-      <h3>店舗 vs EC 売上内訳</h3>
-      <canvas id="splitChart"></canvas>
-    </div>
-    <div class="card">
-      <h3>カテゴリ別売上構成</h3>
-      <canvas id="donutChart"></canvas>
-    </div>
+    <div class="card"><h3>店舗 vs EC 売上内訳</h3><canvas id="splitChart"></canvas></div>
+    <div class="card"><h3>カテゴリ別売上構成</h3><canvas id="donutChart"></canvas></div>
   </div>
-
   <div class="chart-grid wide">
-    <div class="card">
-      <h3>週次トレンド（全週比較）</h3>
-      <canvas id="trendChart" style="max-height:260px"></canvas>
-    </div>
+    <div class="card"><h3>週次トレンド（全週比較）</h3><canvas id="trendChart" style="max-height:260px"></canvas></div>
   </div>
-
   <div class="card" style="margin-top:20px">
     <h3 id="tableTitle">中分類別 週次売上明細</h3>
     <table>
       <thead><tr>
-        <th>カテゴリ</th>
-        <th>店舗売上</th><th>EC売上</th><th>合計売上</th>
-        <th>店舗構成比</th><th>EC構成比</th>
+        <th>カテゴリ</th><th>店舗売上</th><th>EC売上</th><th>合計売上</th><th>店舗構成比</th><th>EC構成比</th>
       </tr></thead>
       <tbody id="tableBody"></tbody>
     </table>
   </div>
 </div>
-
 <script>
-const TAGS = ['TS','TT','LT','PK','SH','BR','LR','SP','LP','LG','OP','JK','OT','AC','BG','GD'];
-const TAG_LABELS = {
-  TS:'Tシャツ', TT:'タンクトップ', LT:'ロングTシャツ', PK:'パーカー',
-  SH:'シャツ', BR:'ブラトップ', LR:'レイヤード', SP:'ショートパンツ',
-  LP:'ロングパンツ', LG:'レギンス', OP:'ワンピース', JK:'ジャケット',
-  OT:'アウター', AC:'アクセサリー', BG:'バッグ', GD:'グッズ'
-};
-
-const GENDER_RATIO = {
-  TS:{M:72/107,W:35/107}, TT:{M:50/60,W:10/60}, LT:{M:5/26,W:21/26}, PK:{M:3/11,W:8/11},
-  SH:{M:1.0,W:0.0}, BR:{M:0.0,W:1.0}, LR:{M:0.0,W:1.0}, SP:{M:50/59,W:9/59},
-  LP:{M:11/37,W:26/37}, LG:{M:0.0,W:1.0}, OP:{M:0.0,W:1.0}, JK:{M:6/21,W:15/21},
-  OT:{M:0.5,W:0.5}, AC:{M:25/33,W:8/33}, BG:{M:0.5,W:0.5}, GD:{M:0.0,W:1.0}
-};
-
-const rawData = {
-  W14: { period:'3/30〜4/5', season:'W14',
-    store:{TS:5684029,TT:818076,LT:19725,PK:1793897,SH:0,BR:0,LR:0,SP:898290,LP:3062028,LG:139904,OP:0,JK:1785309,OT:0,AC:740546,BG:0,GD:0},
-    ec:  {TS:2107512,TT:709314,LT:157000,PK:365000,SH:25200,BR:216420,LR:38400,SP:655292,LP:1394694,LG:566950,OP:14000,JK:408824,OT:0,AC:396335,BG:82800,GD:15000}
-  },
-  W15: { period:'4/6〜4/12', season:'W15',
-    store:{TS:6597769,TT:1770702,LT:0,PK:760428,SH:409636,BR:0,LR:0,SP:1341715,LP:2893986,LG:248284,OP:0,JK:1578601,OT:0,AC:739139,BG:0,GD:0},
-    ec:  {TS:5796868,TT:3381420,LT:170000,PK:213542,SH:1765409,BR:156700,LR:0,SP:1660572,LP:2835574,LG:245100,OP:0,JK:186400,OT:27000,AC:591029,BG:60000,GD:10800}
-  },
-  W16: { period:'4/13〜4/19', season:'W16',
-    store:{TS:6340903,TT:1672666,LT:0,PK:425251,SH:606273,BR:209667,LR:0,SP:1505690,LP:2398554,LG:0,OP:0,JK:1421359,OT:0,AC:560365,BG:0,GD:0},
-    ec:  {TS:1851765,TT:664469,LT:125000,PK:56000,SH:99000,BR:120040,LR:13000,SP:660781,LP:702445,LG:161800,OP:11000,JK:240619,OT:0,AC:275969,BG:48000,GD:6413}
-  }
-};
-
+const TAGS = ["TS", "TT", "LT", "PK", "SH", "BR", "LR", "SP", "LP", "LG", "OP", "JK", "OT", "AC", "BG", "GD"];
+const TAG_LABELS = {"TS": "Tシャツ", "TT": "タンクトップ", "LT": "ロングTシャツ", "PK": "パーカー", "SH": "シャツ", "BR": "ブラトップ", "LR": "レイヤード", "SP": "ショートパンツ", "LP": "ロングパンツ", "LG": "レギンス", "OP": "ワンピース", "JK": "ジャケット", "OT": "アウター", "AC": "アクセサリー", "BG": "バッグ", "GD": "グッズ"};
+const GENDER_RATIO = {"TS": {"M": 0.672897, "W": 0.327103}, "TT": {"M": 0.833333, "W": 0.166667}, "LT": {"M": 0.192308, "W": 0.807692}, "PK": {"M": 0.272727, "W": 0.727273}, "SH": {"M": 1.0, "W": 0.0}, "BR": {"M": 0.0, "W": 1.0}, "LR": {"M": 0.0, "W": 1.0}, "SP": {"M": 0.847458, "W": 0.152542}, "LP": {"M": 0.297297, "W": 0.702703}, "LG": {"M": 0.0, "W": 1.0}, "OP": {"M": 0.0, "W": 1.0}, "JK": {"M": 0.285714, "W": 0.714286}, "OT": {"M": 0.5, "W": 0.5}, "AC": {"M": 0.757576, "W": 0.242424}, "BG": {"M": 0.5, "W": 0.5}, "GD": {"M": 0.0, "W": 1.0}};
+const rawData = {"W14": {"period": "3/30〜4/5", "season": "W14", "store": {"TS": 5684029, "TT": 818076, "LT": 19725, "PK": 1793897, "SH": 0, "BR": 0, "LR": 0, "SP": 898290, "LP": 3062028, "LG": 139904, "OP": 0, "JK": 1785309, "OT": 0, "AC": 740546, "BG": 0, "GD": 0}, "ec": {"TS": 2107512, "TT": 709314, "LT": 157000, "PK": 365000, "SH": 25200, "BR": 216420, "LR": 38400, "SP": 655292, "LP": 1394694, "LG": 566950, "OP": 14000, "JK": 408824, "OT": 0, "AC": 396335, "BG": 82800, "GD": 15000}}, "W15": {"period": "4/6〜4/12", "season": "W15", "store": {"TS": 6597769, "TT": 1770702, "LT": 0, "PK": 760428, "SH": 409636, "BR": 0, "LR": 0, "SP": 1341715, "LP": 2893986, "LG": 248284, "OP": 0, "JK": 1578601, "OT": 0, "AC": 739139, "BG": 0, "GD": 0}, "ec": {"TS": 5796868, "TT": 3381420, "LT": 170000, "PK": 213542, "SH": 1765409, "BR": 156700, "LR": 0, "SP": 1660572, "LP": 2835574, "LG": 245100, "OP": 0, "JK": 186400, "OT": 27000, "AC": 591029, "BG": 60000, "GD": 10800}}, "W16": {"period": "4/13〜4/19", "season": "W16", "store": {"TS": 6340903, "TT": 1672666, "LT": 0, "PK": 425251, "SH": 606273, "BR": 209667, "LR": 0, "SP": 1505690, "LP": 2398554, "LG": 0, "OP": 0, "JK": 1421359, "OT": 0, "AC": 560365, "BG": 0, "GD": 0}, "ec": {"TS": 1851765, "TT": 664469, "LT": 125000, "PK": 56000, "SH": 99000, "BR": 120040, "LR": 13000, "SP": 660781, "LP": 702445, "LG": 161800, "OP": 11000, "JK": 240619, "OT": 0, "AC": 275969, "BG": 48000, "GD": 6413}}};
 const WEEKS = Object.keys(rawData);
 let currentWeek = WEEKS[WEEKS.length - 1];
 let currentGender = 'Total';
-
-function applyGender(obj, gender) {
-  if (gender === 'Total') return obj;
-  return Object.fromEntries(TAGS.map(t => [t, Math.round((obj[t]||0) * GENDER_RATIO[t][gender])]));
+function applyGender(obj, g) {
+  if (g === 'Total') return obj;
+  return Object.fromEntries(TAGS.map(t => [t, Math.round((obj[t]||0) * GENDER_RATIO[t][g])]));
 }
-
-function getWeekData(wk, gender) {
+function getWeekData(wk, g) {
   const d = rawData[wk];
-  return { store: applyGender(d.store, gender), ec: applyGender(d.ec, gender) };
+  return { store: applyGender(d.store, g), ec: applyGender(d.ec, g) };
 }
-
 function sum(obj) { return Object.values(obj).reduce((a,b)=>a+b,0); }
 function fmt(n) { return '¥'+(n/1000000).toFixed(1)+'M'; }
 function fmtYen(n) { return n > 0 ? '¥'+n.toLocaleString() : '-'; }
 function pct(a,b) { return b===0 ? '—' : (a/b*100).toFixed(1)+'%'; }
-function chgStr(cur, prev) {
+function chgStr(cur, prev, prevWk) {
   if (!prev) return '';
   const d = (cur - prev) / prev * 100;
   const sign = d >= 0 ? '▲' : '▼';
   const cls = d >= 0 ? 'up' : 'down';
-  const wi = WEEKS.indexOf(currentWeek);
-  const prevWk = WEEKS[wi-1];
   return `<span class="${cls}">${sign} ${Math.abs(d).toFixed(1)}% vs ${prevWk}</span>`;
 }
-
-// チャートインスタンス
 let splitChart, donutChart, trendChart;
-
 function renderAll() {
   const d = getWeekData(currentWeek, currentGender);
-  const storeTotal = sum(d.store), ecTotal = sum(d.ec), total = storeTotal + ecTotal;
-
-  // 前週比
+  const st = sum(d.store), ec = sum(d.ec), tot = st+ec;
   const wi = WEEKS.indexOf(currentWeek);
   const prev = wi > 0 ? getWeekData(WEEKS[wi-1], currentGender) : null;
-  const ps = prev ? sum(prev.store) : 0, pe = prev ? sum(prev.ec) : 0, pt = ps+pe;
-
-  // KPI
-  document.getElementById('kpi-store').textContent = fmt(storeTotal);
-  document.getElementById('kpi-ec').textContent = fmt(ecTotal);
-  document.getElementById('kpi-total').textContent = fmt(total);
+  const ps = prev?sum(prev.store):0, pe = prev?sum(prev.ec):0;
+  document.getElementById('kpi-store').textContent = fmt(st);
+  document.getElementById('kpi-ec').textContent = fmt(ec);
+  document.getElementById('kpi-total').textContent = fmt(tot);
   document.getElementById('kpi-period').textContent = rawData[currentWeek].period;
   document.getElementById('kpi-season').innerHTML = `<span style="color:#2563eb;font-weight:700">${currentWeek}</span> / 2026シーズン`;
-  document.getElementById('kpi-store-chg').innerHTML = prev ? chgStr(storeTotal, ps) : '<span class="neutral">初週</span>';
-  document.getElementById('kpi-ec-chg').innerHTML   = prev ? chgStr(ecTotal, pe)    : '<span class="neutral">初週</span>';
-  document.getElementById('kpi-total-chg').innerHTML= prev ? chgStr(total, pt)      : '<span class="neutral">初週</span>';
+  document.getElementById('kpi-store-chg').innerHTML = prev ? chgStr(st,ps,WEEKS[wi-1]) : '<span class="neutral">—</span>';
+  document.getElementById('kpi-ec-chg').innerHTML   = prev ? chgStr(ec,pe,WEEKS[wi-1]) : '<span class="neutral">—</span>';
+  document.getElementById('kpi-total-chg').innerHTML= prev ? chgStr(tot,ps+pe,WEEKS[wi-1]) : '<span class="neutral">—</span>';
   document.getElementById('tableTitle').textContent = `中分類別 週次売上明細 — ${currentWeek} (${rawData[currentWeek].period})`;
-
-  // 棒グラフ（店舗 vs EC）
   if (splitChart) splitChart.destroy();
   splitChart = new Chart(document.getElementById('splitChart'), {
-    type: 'bar',
-    data: {
-      labels: ['店舗', 'EC'],
-      datasets: [{
-        data: [storeTotal, ecTotal],
-        backgroundColor: ['#2563eb', '#7c3aed'],
-        borderRadius: 8,
-        barThickness: 60,
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: true, indexAxis: 'y',
-      plugins: {
-        legend: { display: false },
-        tooltip: { callbacks: { label: ctx => ' ¥'+ctx.raw.toLocaleString() } }
-      },
-      scales: {
-        x: { ticks: { color:'#555', callback: v=>'¥'+fmt(v).replace('¥','') }, grid: { color:'#e8eaf0' } },
-        y: { ticks: { color:'#333', font:{size:13,weight:'bold'} }, grid: { display:false } }
-      }
-    }
+    type:'bar', data:{ labels:['店舗','EC'], datasets:[{ data:[st,ec], backgroundColor:['#2563eb','#7c3aed'], borderRadius:8, barThickness:60 }] },
+    options:{ responsive:true, indexAxis:'y', plugins:{ legend:{display:false}, tooltip:{callbacks:{label:ctx=>' ¥'+ctx.raw.toLocaleString()}} },
+      scales:{ x:{ticks:{color:'#555',callback:v=>'¥'+(v/1000000).toFixed(1)+'M'},grid:{color:'#e8eaf0'}}, y:{ticks:{color:'#333',font:{size:13,weight:'bold'}},grid:{display:false}} } }
   });
-
-  // ドーナツ
   const activeTags = TAGS.filter(t=>(d.store[t]||0)+(d.ec[t]||0)>0);
-  const palette = ['#2563eb','#7c3aed','#059669','#d97706','#dc2626','#0891b2','#db2777','#65a30d','#16a34a','#9333ea','#ca8a04','#0e7490','#7e22ce','#15803d'];
+  const palette=['#2563eb','#7c3aed','#059669','#d97706','#dc2626','#0891b2','#db2777','#65a30d','#16a34a','#9333ea','#ca8a04','#0e7490','#7e22ce','#15803d'];
   if (donutChart) donutChart.destroy();
   donutChart = new Chart(document.getElementById('donutChart'), {
-    type: 'doughnut',
-    data: {
-      labels: activeTags.map(t=>TAG_LABELS[t]),
-      datasets:[{ data: activeTags.map(t=>(d.store[t]||0)+(d.ec[t]||0)), backgroundColor:palette, borderWidth:2, borderColor:'#fff' }]
-    },
-    options: {
-      responsive:true, maintainAspectRatio:true,
-      plugins:{
-        legend:{ position:'right', labels:{ color:'#333', font:{size:11}, padding:8, boxWidth:12 } },
-        tooltip:{ callbacks:{ label: ctx=>` ${ctx.label}: ¥${ctx.raw.toLocaleString()}` } }
-      }
-    }
+    type:'doughnut', data:{ labels:activeTags.map(t=>TAG_LABELS[t]), datasets:[{data:activeTags.map(t=>(d.store[t]||0)+(d.ec[t]||0)),backgroundColor:palette,borderWidth:2,borderColor:'#fff'}] },
+    options:{ responsive:true, plugins:{ legend:{position:'right',labels:{color:'#333',font:{size:11},padding:8,boxWidth:12}}, tooltip:{callbacks:{label:ctx=>` ${ctx.label}: ¥${ctx.raw.toLocaleString()}`}} } }
   });
-
-  // トレンド（全週）
   if (trendChart) trendChart.destroy();
   trendChart = new Chart(document.getElementById('trendChart'), {
-    type: 'bar',
-    data: {
-      labels: WEEKS.map(w => `${w}\n${rawData[w].period}`),
-      datasets: [
-        { label:'店舗', data: WEEKS.map(w=>sum(getWeekData(w,currentGender).store)), backgroundColor: WEEKS.map(w=>w===currentWeek?'#2563eb':'#bfdbfe'), borderRadius:6 },
-        { label:'EC',   data: WEEKS.map(w=>sum(getWeekData(w,currentGender).ec)),    backgroundColor: WEEKS.map(w=>w===currentWeek?'#7c3aed':'#ddd6fe'), borderRadius:6 },
-      ]
-    },
-    options: {
-      responsive:true, maintainAspectRatio:true,
-      plugins:{ legend:{ labels:{ color:'#444' } } },
-      scales:{
-        x:{ stacked:true, ticks:{ color:'#555' }, grid:{ color:'#e8eaf0' } },
-        y:{ stacked:true, ticks:{ color:'#555', callback: v=>'¥'+fmt(v).replace('¥','') }, grid:{ color:'#e8eaf0' } }
-      }
-    }
+    type:'bar',
+    data:{ labels:WEEKS.map(w=>`${w}\n${rawData[w].period}`),
+      datasets:[
+        {label:'店舗',data:WEEKS.map(w=>sum(getWeekData(w,currentGender).store)),backgroundColor:WEEKS.map(w=>w===currentWeek?'#2563eb':'#bfdbfe'),borderRadius:6},
+        {label:'EC',  data:WEEKS.map(w=>sum(getWeekData(w,currentGender).ec)),  backgroundColor:WEEKS.map(w=>w===currentWeek?'#7c3aed':'#ddd6fe'),borderRadius:6}
+      ] },
+    options:{ responsive:true, plugins:{legend:{labels:{color:'#444'}}},
+      scales:{ x:{stacked:true,ticks:{color:'#555'},grid:{color:'#e8eaf0'}}, y:{stacked:true,ticks:{color:'#555',callback:v=>'¥'+(v/1000000).toFixed(1)+'M'},grid:{color:'#e8eaf0'}} } }
   });
-
-  // テーブル
   const tbody = document.getElementById('tableBody');
   tbody.innerHTML = '';
-  let totS=0, totE=0;
+  let totS=0,totE=0;
   TAGS.forEach(t=>{
-    const s=d.store[t]||0, e=d.ec[t]||0;
-    totS+=s; totE+=e;
+    const s=d.store[t]||0, e=d.ec[t]||0; totS+=s; totE+=e;
     if(s+e===0) return;
-    tbody.innerHTML+=`<tr>
-      <td>${t} <span style="color:#aaa;font-weight:400">${TAG_LABELS[t]}</span></td>
-      <td class="num-store">${fmtYen(s)}</td>
-      <td class="num-ec">${fmtYen(e)}</td>
-      <td class="num-total">${fmtYen(s+e)}</td>
-      <td style="color:#555">${pct(s,storeTotal)}</td>
-      <td style="color:#555">${pct(e,ecTotal)}</td>
-    </tr>`;
+    tbody.innerHTML+=`<tr><td>${t} <span style="color:#aaa;font-weight:400">${TAG_LABELS[t]}</span></td><td class="num-store">${fmtYen(s)}</td><td class="num-ec">${fmtYen(e)}</td><td class="num-total">${fmtYen(s+e)}</td><td style="color:#555">${pct(s,st)}</td><td style="color:#555">${pct(e,ec)}</td></tr>`;
   });
-  tbody.innerHTML+=`<tr class="total-row">
-    <td>合計</td>
-    <td class="num-store">${fmtYen(totS)}</td>
-    <td class="num-ec">${fmtYen(totE)}</td>
-    <td class="num-total">${fmtYen(totS+totE)}</td>
-    <td style="color:#555">100%</td><td style="color:#555">100%</td>
-  </tr>`;
+  tbody.innerHTML+=`<tr class="total-row"><td>合計</td><td class="num-store">${fmtYen(totS)}</td><td class="num-ec">${fmtYen(totE)}</td><td class="num-total">${fmtYen(totS+totE)}</td><td style="color:#555">100%</td><td style="color:#555">100%</td></tr>`;
 }
-
 function setWeek(wk) {
   currentWeek = wk;
-  document.querySelectorAll('.wbtn').forEach(b => b.classList.toggle('active', b.dataset.wk === wk));
+  document.querySelectorAll('.wbtn').forEach(b=>b.classList.toggle('active',b.dataset.wk===wk));
   renderAll();
 }
-
 function setGender(g) {
   currentGender = g;
-  document.querySelectorAll('.gtab').forEach(b => b.classList.toggle('active', b.textContent.includes(g==='Total'?'Total':g==='M'?'Mens':'Womens')));
+  document.querySelectorAll('.gtab').forEach(b=>b.classList.toggle('active',b.textContent.includes(g==='Total'?'Total':g==='M'?'Mens':'Womens')));
   renderAll();
 }
-
-// 週ボタン生成
 const btnContainer = document.getElementById('weekBtns');
-btnContainer.style.display = 'flex';
-btnContainer.style.gap = '8px';
-WEEKS.forEach((wk, i) => {
+WEEKS.forEach((wk,i)=>{
   const btn = document.createElement('div');
-  btn.className = 'wbtn' + (wk === currentWeek ? ' active' : '');
+  btn.className = 'wbtn'+(wk===currentWeek?' active':'');
   btn.dataset.wk = wk;
-  const isLatest = i === WEEKS.length - 1;
-  btn.innerHTML = wk + (isLatest ? '<span class="latest-badge">最新</span>' : '');
-  btn.onclick = () => setWeek(wk);
+  btn.innerHTML = wk+(i===WEEKS.length-1?'<span class="latest-badge">最新</span>':'');
+  btn.onclick = ()=>setWeek(wk);
   btnContainer.appendChild(btn);
 });
-
 renderAll();
 </script>
 </body>
