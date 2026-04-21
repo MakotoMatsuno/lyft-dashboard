@@ -34,9 +34,9 @@ header h1{font-size:22px;font-weight:800;letter-spacing:2px}
 .card h3{font-size:12px;color:#888;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;font-weight:700}
 .card canvas{max-height:260px}
 .section-block{margin-bottom:16px;overflow-x:auto}
-.section-header{color:#fff;font-size:12px;font-weight:700;padding:8px 14px;border-radius:8px 8px 0 0;letter-spacing:.5px}
-.bg-store{background:#2563eb}.bg-ec{background:#7c3aed}.bg-total{background:#059669}
-.bg-inv-store{background:#d97706}.bg-inv-ec{background:#dc2626}.bg-inv-total{background:#0891b2}
+.section-header{color:#444;font-size:12px;font-weight:700;padding:8px 14px;border-radius:8px 8px 0 0;letter-spacing:.5px;background:#eef0f5;border-left:4px solid #9ca3af}
+.bg-store{border-left-color:#4b6bfb}.bg-ec{border-left-color:#8b5cf6}.bg-total{border-left-color:#374151}
+.bg-inv-store{border-left-color:#6b7280}.bg-inv-ec{border-left-color:#9ca3af}.bg-inv-total{border-left-color:#374151}
 .section-table{width:100%;border-collapse:collapse;font-size:11.5px;border:1px solid #dde1ea;border-top:none}
 .section-table th{text-align:right;padding:6px 8px;background:#f7f9fc;color:#666;font-weight:700;border-bottom:1px solid #e8eaf0;white-space:nowrap;font-size:11px}
 .section-table th:first-child{text-align:left;min-width:110px;position:sticky;left:0;background:#f7f9fc}
@@ -45,32 +45,32 @@ header h1{font-size:22px;font-weight:800;letter-spacing:2px}
 .section-table tr:last-child td{border-bottom:none}
 .section-table tr:hover td{background:#f7f9fc}
 .section-table tr:hover td:first-child{background:#f0f2f7}
-.total-col{font-weight:700!important;background:#f0f4ff!important;border-left:1px solid #dde1ea}
+.total-col{font-weight:700!important;background:#f7f9fc!important;border-left:1px solid #dde1ea}
 .yoy-good{color:#16a34a;font-weight:700}.yoy-bad{color:#dc2626;font-weight:700}.yoy-neu{color:#888}
 /* 在庫セクション */
 .inv-section{margin-bottom:32px}
 .inv-section-title{font-size:18px;font-weight:800;color:#1a1a2e;margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid #2563eb;display:flex;align-items:center;gap:10px}
 .inv-section-title .badge-inv{background:#2563eb;color:#fff;font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600}
 .inv-kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:20px}
-.inv-kpi{border-radius:14px;padding:18px 20px;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.12)}
-.inv-kpi .iklabel{font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;font-weight:600;opacity:.85}
-.inv-kpi .ikvalue{font-size:22px;font-weight:800}
-.inv-kpi .iksub{font-size:11px;margin-top:4px;opacity:.75}
-.bg-kikou{background:linear-gradient(135deg,#2563eb,#1d4ed8)}
-.bg-teiban{background:linear-gradient(135deg,#7c3aed,#6d28d9)}
-.bg-carry{background:linear-gradient(135deg,#059669,#047857)}
-.bg-inactive{background:linear-gradient(135deg,#d97706,#b45309)}
-.bg-total-inv{background:linear-gradient(135deg,#0891b2,#0e7490)}
+.inv-kpi{border-radius:14px;padding:18px 20px;background:#fff;border:1px solid #dde1ea;box-shadow:0 1px 4px rgba(0,0,0,.05);border-top:3px solid #9ca3af}
+.inv-kpi .iklabel{font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;font-weight:600;color:#888}
+.inv-kpi .ikvalue{font-size:22px;font-weight:800;color:#1a1a2e}
+.inv-kpi .iksub{font-size:11px;margin-top:4px;color:#aaa}
+.bg-kikou{border-top-color:#4b6bfb}
+.bg-teiban{border-top-color:#8b5cf6}
+.bg-carry{border-top-color:#6b7280}
+.bg-inactive{border-top-color:#9ca3af}
+.bg-total-inv{border-top-color:#374151}
 .inv-cat-table{width:100%;border-collapse:collapse;font-size:12px}
 .inv-cat-table th{padding:8px 10px;text-align:right;background:#f7f9fc;color:#666;font-weight:700;border-bottom:2px solid #e8eaf0;font-size:11px;white-space:nowrap}
 .inv-cat-table th:first-child{text-align:left;min-width:100px}
 .inv-cat-table td{padding:7px 10px;text-align:right;border-bottom:1px solid #f0f2f7;white-space:nowrap}
 .inv-cat-table td:first-child{text-align:left;font-weight:700;color:#444}
 .inv-cat-table tr:hover td{background:#f7f9fc}
-.inv-cat-table .kubun-kikou td{color:#2563eb}.inv-cat-table .kubun-teiban td{color:#7c3aed}
-.inv-cat-table .kubun-carry td{color:#059669}.inv-cat-table .kubun-inactive td{color:#d97706}
-.inv-cat-table .total-row td{font-weight:800;background:#f0f4ff;border-top:2px solid #dde1ea}
-.inv-cat-table .total-col{font-weight:700!important;background:#f0f4ff!important;border-left:1px solid #dde1ea}
+.inv-cat-table .kubun-kikou td:first-child{color:#4b6bfb}.inv-cat-table .kubun-teiban td:first-child{color:#8b5cf6}
+.inv-cat-table .kubun-carry td:first-child{color:#6b7280}.inv-cat-table .kubun-inactive td:first-child{color:#9ca3af}
+.inv-cat-table .total-row td{font-weight:800;background:#f7f9fc;border-top:2px solid #dde1ea}
+.inv-cat-table .total-col{font-weight:700!important;background:#f7f9fc!important;border-left:1px solid #dde1ea}
 </style>
 </head>
 <body>
@@ -78,7 +78,7 @@ header h1{font-size:22px;font-weight:800;letter-spacing:2px}
   <h1>LYFT</h1>
   <span class="badge">WEEKLY</span>
   <span style="color:#666;font-size:13px">週次売上ダッシュボード</span>
-  <span class="updated">最終更新: 2026-04-21 19:41</span>
+  <span class="updated">最終更新: 2026-04-21 19:45</span>
 </header>
 <div class="gender-bar">
   <div class="gtab active" onclick="setGender('Total')">Total</div>
