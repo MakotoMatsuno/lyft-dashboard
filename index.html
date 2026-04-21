@@ -78,7 +78,7 @@ header h1{font-size:22px;font-weight:800;letter-spacing:2px}
   <h1>LYFT</h1>
   <span class="badge">WEEKLY</span>
   <span style="color:#666;font-size:13px">週次売上ダッシュボード</span>
-  <span class="updated">最終更新: 2026-04-21 19:51</span>
+  <span class="updated">最終更新: 2026-04-21 19:53</span>
 </header>
 <div class="gender-bar">
   <div class="gtab active" onclick="setGender('Total')">Total</div>
@@ -136,8 +136,9 @@ function fmtCell(v,mi){
   return '-';
 }
 function yoyCls(v,mi){
-  if(mi!==2)return '';
-  return v===null?'yoy-neu':v>=100?'yoy-good':'yoy-bad';
+  if(mi===2)return v===null?'yoy-neu':v>=100?'yoy-good':'yoy-bad';
+  if(mi===5)return(v===null||v===0)?'yoy-neu':v>0?'yoy-good':'yoy-bad';
+  return '';
 }
 function chgStr(cur,prev,pw){
   if(!prev)return '';
