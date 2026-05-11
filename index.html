@@ -90,7 +90,7 @@ body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f0f2f7;color:#1a1
   <div class="sidebar">
     <div class="sidebar-brand">
       <h1>LYFT</h1>
-      <div class="s-updated">最終更新: 2026-05-11 15:38</div>
+      <div class="s-updated">最終更新: 2026-05-11 15:47</div>
     </div>
     <div class="gender-tabs">
       <div class="gtab active" onclick="setGender('Total')">Total</div>
@@ -499,8 +499,9 @@ MKEYS.slice().reverse().forEach((mk,ri)=>{
   monthNav.appendChild(btn);
 });
 
-// nav-group-body の初期 max-height を設定（アニメーション基準値）
-document.querySelectorAll('.nav-group-body').forEach(b=>{b.style.maxHeight='none';});
+// サイドバーグループを初期状態で全て閉じる
+document.querySelectorAll('.nav-group-body').forEach(b=>{b.style.maxHeight='0px';b.classList.add('collapsed');});
+document.querySelectorAll('.nav-group-title').forEach(t=>t.classList.add('collapsed'));
 
 renderAll();
 </script>
