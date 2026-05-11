@@ -7,31 +7,41 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f0f2f7;color:#1a1a2e;min-height:100vh}
-header{background:#fff;border-bottom:1px solid #dde1ea;padding:18px 32px;display:flex;align-items:center;gap:16px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
-header h1{font-size:22px;font-weight:800;letter-spacing:2px}
+body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f0f2f7;color:#1a1a2e;overflow:hidden;height:100vh}
+.layout{display:flex;height:100vh}
+.sidebar{width:230px;background:#1a1a2e;color:#e2e8f0;display:flex;flex-direction:column;overflow-y:auto;flex-shrink:0}
+.sidebar-brand{padding:18px 16px 14px;border-bottom:1px solid #2d3748}
+.sidebar-brand h1{font-size:22px;font-weight:800;letter-spacing:2px;color:#fff}
+.sidebar-brand .s-updated{font-size:10px;color:#4a5568;margin-top:3px}
+.gender-tabs{display:flex;gap:4px;padding:10px 12px;border-bottom:1px solid #2d3748}
+.gtab{flex:1;padding:6px 0;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;color:#718096;text-align:center;transition:all .15s}
+.gtab.active{background:#2563eb;color:#fff}
+.gtab:hover:not(.active){color:#e2e8f0;background:#2d3748}
+.nav-group{padding:10px 0}
+.nav-group+.nav-group{border-top:1px solid #2d3748}
+.nav-group-title{font-size:10px;color:#4a5568;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:0 16px 6px}
+.nav-item{display:flex;align-items:center;padding:7px 16px;cursor:pointer;font-size:13px;color:#a0aec0;transition:all .1s;border-left:3px solid transparent;gap:6px}
+.nav-item:hover{color:#e2e8f0;background:#2d3748}
+.nav-item.active{color:#fff;border-left-color:#2563eb;background:rgba(37,99,235,.15)}
+.latest-badge{font-size:9px;background:#dcfce7;color:#16a34a;border-radius:10px;padding:1px 5px;font-weight:700;margin-left:auto;flex-shrink:0}
+.nav-period{font-size:10px;color:#4a5568;flex-shrink:0}
+.content-area{flex:1;overflow-y:auto;background:#f0f2f7}
+.view{display:none}.view.active{display:block}
+.content-header{background:#fff;padding:14px 28px;border-bottom:1px solid #dde1ea;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.content-header h2{font-size:15px;font-weight:800;color:#1a1a2e}
 .badge{background:#2563eb;color:#fff;font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600}
-.updated{margin-left:auto;font-size:11px;color:#aaa}
-.gender-bar{display:flex;gap:4px;padding:14px 32px 0;border-bottom:2px solid #dde1ea;background:#fff}
-.gtab{padding:7px 22px;border-radius:8px 8px 0 0;cursor:pointer;font-size:13px;font-weight:600;color:#888;border:1px solid transparent;border-bottom:none;transition:all .15s}
-.gtab.active{background:#f0f2f7;color:#2563eb;border-color:#dde1ea;border-bottom-color:#f0f2f7}
-.gtab:hover:not(.active){color:#444}
-.week-selector{background:#fff;border-bottom:1px solid #dde1ea;padding:12px 32px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.week-selector .wlabel{font-size:12px;color:#888;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-right:4px}
-.wbtn{padding:6px 16px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:600;border:1.5px solid #dde1ea;background:#fff;color:#555;transition:all .15s}
-.wbtn:hover:not(.active){border-color:#2563eb;color:#2563eb}
-.wbtn.active{background:#2563eb;border-color:#2563eb;color:#fff}
-.latest-badge{font-size:10px;background:#dcfce7;color:#16a34a;border-radius:10px;padding:1px 6px;margin-left:4px;font-weight:700;vertical-align:middle}
-.main{padding:24px 32px;max-width:1600px}
-.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:24px}
-.kpi{background:#fff;border:1px solid #dde1ea;border-radius:14px;padding:18px 20px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.badge-monthly{background:#059669;color:#fff;font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600}
+.badge-inv{background:#6b7280;color:#fff;font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600}
+.main{padding:22px 28px;max-width:1600px}
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:20px}
+.kpi{background:#fff;border:1px solid #dde1ea;border-radius:14px;padding:16px 18px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
 .kpi .klabel{font-size:11px;color:#888;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;font-weight:600}
-.kpi .kvalue{font-size:24px;font-weight:800;color:#1a1a2e}
-.kpi .kchg{font-size:12px;margin-top:5px;font-weight:600}
+.kpi .kvalue{font-size:22px;font-weight:800;color:#1a1a2e}
+.kpi .kchg{font-size:12px;margin-top:4px;font-weight:600}
 .up{color:#2563eb}.down{color:#dc2626}.neu{color:#aaa}
-.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
-.card{background:#fff;border:1px solid #dde1ea;border-radius:14px;padding:24px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
-.card h3{font-size:12px;color:#888;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;font-weight:700}
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px}
+.card{background:#fff;border:1px solid #dde1ea;border-radius:14px;padding:22px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.card h3{font-size:12px;color:#888;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;font-weight:700}
 .card canvas{max-height:260px}
 .section-block{margin-bottom:16px;overflow-x:auto}
 .section-header{color:#444;font-size:12px;font-weight:700;padding:8px 14px;border-radius:8px 8px 0 0;letter-spacing:.5px;background:#eef0f5;border-left:4px solid #9ca3af}
@@ -48,13 +58,10 @@ header h1{font-size:22px;font-weight:800;letter-spacing:2px}
 .total-col{font-weight:700!important;background:#f7f9fc!important;border-left:1px solid #dde1ea}
 .yoy-good{color:#2563eb;font-weight:700}.yoy-bad{color:#dc2626;font-weight:700}.yoy-neu{color:#888}
 /* 在庫セクション */
-.inv-section{margin-bottom:32px}
-.inv-section-title{font-size:18px;font-weight:800;color:#1a1a2e;margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid #2563eb;display:flex;align-items:center;gap:10px}
-.inv-section-title .badge-inv{background:#2563eb;color:#fff;font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600}
 .inv-kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:20px}
-.inv-kpi{border-radius:14px;padding:18px 20px;background:#fff;border:1px solid #dde1ea;box-shadow:0 1px 4px rgba(0,0,0,.05);border-top:3px solid #9ca3af}
+.inv-kpi{border-radius:14px;padding:16px 18px;background:#fff;border:1px solid #dde1ea;box-shadow:0 1px 4px rgba(0,0,0,.05);border-top:3px solid #9ca3af}
 .inv-kpi .iklabel{font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;font-weight:600;color:#888}
-.inv-kpi .ikvalue{font-size:22px;font-weight:800;color:#1a1a2e}
+.inv-kpi .ikvalue{font-size:20px;font-weight:800;color:#1a1a2e}
 .inv-kpi .iksub{font-size:11px;margin-top:4px;color:#aaa}
 .bg-kikou{border-top-color:#4b6bfb}
 .bg-teiban{border-top-color:#8b5cf6}
@@ -71,66 +78,88 @@ header h1{font-size:22px;font-weight:800;letter-spacing:2px}
 .inv-cat-table .kubun-carry td:first-child{color:#6b7280}.inv-cat-table .kubun-inactive td:first-child{color:#9ca3af}
 .inv-cat-table .total-row td{font-weight:800;background:#f7f9fc;border-top:2px solid #dde1ea}
 .inv-cat-table .total-col{font-weight:700!important;background:#f7f9fc!important;border-left:1px solid #dde1ea}
-.month-section-title{font-size:18px;font-weight:800;color:#1a1a2e;margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid #059669;display:flex;align-items:center;gap:10px}
-.badge-monthly{background:#059669;color:#fff;font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600}
-.month-selector{background:#fff;border-bottom:1px solid #dde1ea;padding:10px 0 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:20px}
 </style>
 </head>
 <body>
-<header>
-  <h1>LYFT</h1>
-  <span class="badge">WEEKLY</span>
-  <span style="color:#666;font-size:13px">週次売上ダッシュボード</span>
-  <span class="updated">最終更新: 2026-05-11 12:15</span>
-</header>
-<div class="gender-bar">
-  <div class="gtab active" onclick="setGender('Total')">Total</div>
-  <div class="gtab" onclick="setGender('M')">Mens</div>
-  <div class="gtab" onclick="setGender('W')">Womens</div>
-</div>
-<div class="week-selector">
-  <span class="wlabel">週</span>
-  <div id="weekBtns" style="display:flex;gap:8px;flex-wrap:wrap"></div>
-</div>
-<div class="main">
-  <div class="kpi-row">
-    <div class="kpi"><div class="klabel">店舗売上 2026</div><div class="kvalue" id="k-st26">—</div><div class="kchg" id="k-st-chg"></div></div>
-    <div class="kpi"><div class="klabel">EC売上 2026</div><div class="kvalue" id="k-ec26">—</div><div class="kchg" id="k-ec-chg"></div></div>
-    <div class="kpi"><div class="klabel">合算売上 2026</div><div class="kvalue" id="k-tot26">—</div><div class="kchg" id="k-tot-chg"></div></div>
-    <div class="kpi"><div class="klabel">合算売上 前年比</div><div class="kvalue" id="k-yoy">—</div><div class="kchg neu" id="k-period"></div></div>
-    <div class="kpi"><div class="klabel">合算在庫高</div><div class="kvalue" id="k-inv">—</div><div class="kchg neu">最新スナップ</div></div>
+<div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-brand">
+      <h1>LYFT</h1>
+      <div class="s-updated">最終更新: 2026-05-11 13:42</div>
+    </div>
+    <div class="gender-tabs">
+      <div class="gtab active" onclick="setGender('Total')">Total</div>
+      <div class="gtab" onclick="setGender('M')">M</div>
+      <div class="gtab" onclick="setGender('W')">W</div>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">週次売上</div>
+      <div id="weekNav"></div>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">月間実績</div>
+      <div id="monthNav"></div>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">在庫管理</div>
+      <div class="nav-item" id="invNav" onclick="showView('inv')">エニロジ在庫</div>
+    </div>
   </div>
-  <div class="chart-grid">
-    <div class="card"><h3>週次売上トレンド（全週）</h3><canvas id="trendChart"></canvas></div>
-    <div class="card"><h3>カテゴリ別売上構成（2026実績）</h3><canvas id="donutChart"></canvas></div>
+  <div class="content-area">
+    <div id="view-weekly" class="view active">
+      <div class="content-header">
+        <h2 id="weekViewTitle">週次売上</h2>
+        <span class="badge">WEEKLY</span>
+        <span id="weekPeriodLabel" style="color:#888;font-size:13px"></span>
+      </div>
+      <div class="main">
+        <div class="kpi-row">
+          <div class="kpi"><div class="klabel">店舗売上 2026</div><div class="kvalue" id="k-st26">—</div><div class="kchg" id="k-st-chg"></div></div>
+          <div class="kpi"><div class="klabel">EC売上 2026</div><div class="kvalue" id="k-ec26">—</div><div class="kchg" id="k-ec-chg"></div></div>
+          <div class="kpi"><div class="klabel">合算売上 2026</div><div class="kvalue" id="k-tot26">—</div><div class="kchg" id="k-tot-chg"></div></div>
+          <div class="kpi"><div class="klabel">合算売上 前年比</div><div class="kvalue" id="k-yoy">—</div><div class="kchg neu" id="k-period"></div></div>
+          <div class="kpi"><div class="klabel">合算在庫高</div><div class="kvalue" id="k-inv">—</div><div class="kchg neu">最新スナップ</div></div>
+        </div>
+        <div class="chart-grid">
+          <div class="card"><h3>週次売上トレンド（全週）</h3><canvas id="trendChart"></canvas></div>
+          <div class="card"><h3>カテゴリ別売上構成（2026実績）</h3><canvas id="donutChart"></canvas></div>
+        </div>
+        <div id="sectionBlocks"></div>
+      </div>
+    </div>
+    <div id="view-monthly" class="view">
+      <div class="content-header">
+        <h2 id="monthViewTitle">月間実績</h2>
+        <span class="badge-monthly">MONTHLY</span>
+      </div>
+      <div class="main">
+        <div class="kpi-row">
+          <div class="kpi"><div class="klabel">店舗売上</div><div class="kvalue" id="mk-st">—</div><div class="kchg" id="mk-st-yoy"></div></div>
+          <div class="kpi"><div class="klabel">EC売上</div><div class="kvalue" id="mk-ec">—</div><div class="kchg" id="mk-ec-yoy"></div></div>
+          <div class="kpi"><div class="klabel">合算売上</div><div class="kvalue" id="mk-tot">—</div><div class="kchg" id="mk-tot-yoy"></div></div>
+          <div class="kpi"><div class="klabel">合算売上 前年比</div><div class="kvalue" id="mk-yoy">—</div><div class="kchg neu" id="mk-label">—</div></div>
+          <div class="kpi"><div class="klabel">合算 前年同月実績</div><div class="kvalue" id="mk-prev">—</div><div class="kchg neu">前年同月</div></div>
+        </div>
+        <div class="chart-grid">
+          <div class="card" style="grid-column:1/-1"><h3>月次売上トレンド（全月）</h3><canvas id="mTrendChart" style="max-height:300px"></canvas></div>
+        </div>
+        <div id="monthSectionBlocks"></div>
+      </div>
+    </div>
+    <div id="view-inv" class="view">
+      <div class="content-header">
+        <h2>エニロジ在庫管理</h2>
+        <span class="badge-inv">INVENTORY</span>
+      </div>
+      <div class="main">
+        <div class="inv-kpi-row" id="invKpiRow"></div>
+        <div class="chart-grid">
+          <div class="card"><h3>週次在庫推移</h3><canvas id="invTrendChart"></canvas></div>
+          <div class="card" style="overflow-x:auto"><h3 id="invCatTitle">中分類別在庫（最新週）</h3><div id="invCatTable"></div></div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div id="sectionBlocks"></div>
-</div>
-<div class="main" style="border-top:3px solid #2563eb;padding-top:28px;margin-top:8px">
-  <div class="inv-section-title">エニロジ在庫管理サマリー <span class="badge-inv">INVENTORY</span></div>
-  <div class="inv-kpi-row" id="invKpiRow"></div>
-  <div class="chart-grid">
-    <div class="card"><h3>週次在庫推移</h3><canvas id="invTrendChart"></canvas></div>
-    <div class="card" style="overflow-x:auto"><h3 id="invCatTitle">中分類別在庫（最新週）</h3><div id="invCatTable"></div></div>
-  </div>
-</div>
-<div class="main" style="border-top:3px solid #059669;padding-top:28px;margin-top:8px">
-  <div class="month-section-title">月間実績 <span class="badge-monthly">MONTHLY</span></div>
-  <div class="month-selector">
-    <span class="wlabel">月</span>
-    <div id="monthBtns" style="display:flex;gap:8px;flex-wrap:wrap"></div>
-  </div>
-  <div class="kpi-row">
-    <div class="kpi"><div class="klabel">店舗売上</div><div class="kvalue" id="mk-st">—</div><div class="kchg" id="mk-st-yoy"></div></div>
-    <div class="kpi"><div class="klabel">EC売上</div><div class="kvalue" id="mk-ec">—</div><div class="kchg" id="mk-ec-yoy"></div></div>
-    <div class="kpi"><div class="klabel">合算売上</div><div class="kvalue" id="mk-tot">—</div><div class="kchg" id="mk-tot-yoy"></div></div>
-    <div class="kpi"><div class="klabel">合算売上 前年比</div><div class="kvalue" id="mk-yoy">—</div><div class="kchg neu" id="mk-label">—</div></div>
-    <div class="kpi"><div class="klabel">合算 前年同月実績</div><div class="kvalue" id="mk-prev">—</div><div class="kchg neu">前年同月</div></div>
-  </div>
-  <div class="chart-grid">
-    <div class="card" style="grid-column:1/-1"><h3>月次売上トレンド（全月）</h3><canvas id="mTrendChart" style="max-height:300px"></canvas></div>
-  </div>
-  <div id="monthSectionBlocks"></div>
 </div>
 <script>
 const TAGS     = ["TS", "TT", "LT", "PK", "SH", "BR", "LR", "SP", "LP", "LG", "OP", "JK", "OT", "AC", "BG", "GD"];
@@ -186,6 +215,8 @@ function renderAll(){
   yoyEl.textContent=yoy!==null?yoy+'%':'—';
   yoyEl.className='kvalue '+(yoy===null?'neu':yoy>=100?'up':'down');
   document.getElementById('k-period').innerHTML=`<span style="color:#2563eb;font-weight:700">${cw}</span> ${ALL[cw].period}`;
+  document.getElementById('weekViewTitle').textContent=`週次売上 — ${cw}`;
+  document.getElementById('weekPeriodLabel').textContent=ALL[cw].period;
   document.getElementById('k-st-chg').innerHTML =prev?chgStr(st26,pst,WEEKS[wi-1]):'<span class="neu">—</span>';
   document.getElementById('k-ec-chg').innerHTML =prev?chgStr(ec26,pec,WEEKS[wi-1]):'<span class="neu">—</span>';
   document.getElementById('k-tot-chg').innerHTML=prev?chgStr(tot26,ptot,WEEKS[wi-1]):'<span class="neu">—</span>';
@@ -259,8 +290,25 @@ function renderAll(){
   });
 }
 
-function setWeek(wk){cw=wk;document.querySelectorAll('.wbtn').forEach(b=>b.classList.toggle('active',b.dataset.wk===wk));renderAll();}
-function setGender(g){cg=g;document.querySelectorAll('.gtab').forEach(b=>b.classList.toggle('active',b.textContent.includes(g==='Total'?'Total':g==='M'?'Mens':'Womens')));renderAll();renderMonth();}
+function showView(v){
+  document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
+  document.getElementById('view-'+v).classList.add('active');
+  document.getElementById('invNav').classList.toggle('active',v==='inv');
+  if(v==='monthly')renderMonth();
+  if(v==='inv')renderInv();
+}
+function setWeek(wk){
+  cw=wk;
+  document.querySelectorAll('#weekNav .nav-item').forEach(b=>b.classList.toggle('active',b.dataset.wk===wk));
+  showView('weekly');
+  renderAll();
+}
+function setGender(g){
+  cg=g;
+  document.querySelectorAll('.gtab').forEach(b=>b.classList.toggle('active',b.textContent===g));
+  renderAll();
+  renderMonth();
+}
 
 const MKEYS = Object.keys(MONTHS_ALL);
 let cm = MKEYS[MKEYS.length-1];
@@ -287,6 +335,7 @@ function renderMonth(){
   document.getElementById('mk-tot').textContent='¥'+fmtM(tot);
   document.getElementById('mk-prev').textContent='¥'+fmtM(tot25);
   document.getElementById('mk-label').textContent=MONTHS_ALL[cm].label;
+  document.getElementById('monthViewTitle').textContent=`月間実績 — ${MONTHS_ALL[cm].label}`;
   document.getElementById('mk-st-yoy').innerHTML=`<span class="${yoyCl(st,st25)}">${yoyStr(st,st25)}</span>`;
   document.getElementById('mk-ec-yoy').innerHTML=`<span class="${yoyCl(ec,ec25)}">${yoyStr(ec,ec25)}</span>`;
   document.getElementById('mk-tot-yoy').innerHTML=`<span class="${yoyCl(tot,tot25)}">${yoyStr(tot,tot25)}</span>`;
@@ -344,7 +393,12 @@ function renderMonth(){
     wrap.appendChild(tbl); container.appendChild(wrap);
   });
 }
-function setMonth(k){cm=k;document.querySelectorAll('.mbtn').forEach(b=>b.classList.toggle('active',b.dataset.mk===k));renderMonth();}
+function setMonth(k){
+  cm=k;
+  document.querySelectorAll('#monthNav .nav-item').forEach(b=>b.classList.toggle('active',b.dataset.mk===k));
+  showView('monthly');
+  renderMonth();
+}
 
 const KUBUN_LIST  = ['今期品','定番品','稼働キャリー品','非稼働在庫'];
 const KUBUN_COLORS= {'今期品':'#2563eb','定番品':'#7c3aed','稼働キャリー品':'#059669','非稼働在庫':'#d97706'};
@@ -402,29 +456,31 @@ function renderInv(){
   catContainer.innerHTML=html;
 }
 
-const bc=document.getElementById('weekBtns');
-WEEKS.forEach((wk,i)=>{
+const weekNav=document.getElementById('weekNav');
+WEEKS.slice().reverse().forEach((wk,ri)=>{
+  const i=WEEKS.length-1-ri;
   const btn=document.createElement('div');
-  btn.className='wbtn'+(wk===cw?' active':'');
+  btn.className='nav-item'+(wk===cw?' active':'');
   btn.dataset.wk=wk;
-  btn.innerHTML=wk+(i===WEEKS.length-1?'<span class="latest-badge">最新</span>':'');
+  const isLatest=i===WEEKS.length-1;
+  btn.innerHTML=`<span style="font-weight:700">${wk}</span><span class="nav-period">${ALL[wk].period}</span>`+(isLatest?'<span class="latest-badge">最新</span>':'');
   btn.onclick=()=>setWeek(wk);
-  bc.appendChild(btn);
+  weekNav.appendChild(btn);
 });
 
-const mbc=document.getElementById('monthBtns');
-MKEYS.forEach((mk,i)=>{
+const monthNav=document.getElementById('monthNav');
+MKEYS.slice().reverse().forEach((mk,ri)=>{
+  const i=MKEYS.length-1-ri;
   const btn=document.createElement('div');
-  btn.className='wbtn mbtn'+(mk===cm?' active':'');
+  btn.className='nav-item'+(mk===cm?' active':'');
   btn.dataset.mk=mk;
-  btn.innerHTML=MONTHS_ALL[mk].label+(i===MKEYS.length-1?'<span class="latest-badge">最新</span>':'');
+  const isLatest=i===MKEYS.length-1;
+  btn.innerHTML=MONTHS_ALL[mk].label+(isLatest?'<span class="latest-badge">最新</span>':'');
   btn.onclick=()=>setMonth(mk);
-  mbc.appendChild(btn);
+  monthNav.appendChild(btn);
 });
 
 renderAll();
-renderInv();
-renderMonth();
 </script>
 </body>
 </html>
