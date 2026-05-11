@@ -19,7 +19,12 @@ body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f0f2f7;color:#1a1
 .gtab:hover:not(.active){color:#e2e8f0;background:#2d3748}
 .nav-group{padding:10px 0}
 .nav-group+.nav-group{border-top:1px solid #2d3748}
-.nav-group-title{font-size:10px;color:#4a5568;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:0 16px 6px}
+.nav-group-title{font-size:10px;color:#4a5568;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:6px 16px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;user-select:none;transition:color .15s}
+.nav-group-title:hover{color:#718096}
+.nav-group-title .toggle-arrow{font-size:9px;transition:transform .2s;display:inline-block}
+.nav-group-title.collapsed .toggle-arrow{transform:rotate(-90deg)}
+.nav-group-body{overflow:hidden;transition:max-height .25s ease}
+.nav-group-body.collapsed{max-height:0!important}
 .nav-item{display:flex;align-items:center;padding:7px 16px;cursor:pointer;font-size:13px;color:#a0aec0;transition:all .1s;border-left:3px solid transparent;gap:6px}
 .nav-item:hover{color:#e2e8f0;background:#2d3748}
 .nav-item.active{color:#fff;border-left-color:#2563eb;background:rgba(37,99,235,.15)}
@@ -85,7 +90,7 @@ body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f0f2f7;color:#1a1
   <div class="sidebar">
     <div class="sidebar-brand">
       <h1>LYFT</h1>
-      <div class="s-updated">最終更新: 2026-05-11 15:17</div>
+      <div class="s-updated">最終更新: 2026-05-11 15:38</div>
     </div>
     <div class="gender-tabs">
       <div class="gtab active" onclick="setGender('Total')">Total</div>
@@ -93,16 +98,18 @@ body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f0f2f7;color:#1a1
       <div class="gtab" onclick="setGender('W')">W</div>
     </div>
     <div class="nav-group">
-      <div class="nav-group-title">週次売上</div>
-      <div id="weekNav"></div>
+      <div class="nav-group-title" onclick="toggleNavGroup(this)">週次売上 <span class="toggle-arrow">▼</span></div>
+      <div class="nav-group-body" id="weekNav"></div>
     </div>
     <div class="nav-group">
-      <div class="nav-group-title">月間実績</div>
-      <div id="monthNav"></div>
+      <div class="nav-group-title" onclick="toggleNavGroup(this)">月間実績 <span class="toggle-arrow">▼</span></div>
+      <div class="nav-group-body" id="monthNav"></div>
     </div>
     <div class="nav-group">
-      <div class="nav-group-title">在庫管理</div>
-      <div class="nav-item" id="invNav" onclick="showView('inv')">エニロジ在庫</div>
+      <div class="nav-group-title" onclick="toggleNavGroup(this)">在庫管理 <span class="toggle-arrow">▼</span></div>
+      <div class="nav-group-body">
+        <div class="nav-item" id="invNav" onclick="showView('inv')">エニロジ在庫</div>
+      </div>
     </div>
   </div>
   <div class="content-area">
@@ -290,6 +297,18 @@ function renderAll(){
   });
 }
 
+function toggleNavGroup(titleEl){
+  titleEl.classList.toggle('collapsed');
+  const body=titleEl.nextElementSibling;
+  if(titleEl.classList.contains('collapsed')){
+    body.style.maxHeight=body.scrollHeight+'px';
+    requestAnimationFrame(()=>body.classList.add('collapsed'));
+  }else{
+    body.classList.remove('collapsed');
+    body.style.maxHeight=body.scrollHeight+'px';
+    body.addEventListener('transitionend',()=>{body.style.maxHeight='none';},{once:true});
+  }
+}
 function showView(v){
   document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
   document.getElementById('view-'+v).classList.add('active');
@@ -479,6 +498,9 @@ MKEYS.slice().reverse().forEach((mk,ri)=>{
   btn.onclick=()=>setMonth(mk);
   monthNav.appendChild(btn);
 });
+
+// nav-group-body の初期 max-height を設定（アニメーション基準値）
+document.querySelectorAll('.nav-group-body').forEach(b=>{b.style.maxHeight='none';});
 
 renderAll();
 </script>
