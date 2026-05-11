@@ -81,7 +81,7 @@ header h1{font-size:22px;font-weight:800;letter-spacing:2px}
   <h1>LYFT</h1>
   <span class="badge">WEEKLY</span>
   <span style="color:#666;font-size:13px">週次売上ダッシュボード</span>
-  <span class="updated">最終更新: 2026-05-11 12:01</span>
+  <span class="updated">最終更新: 2026-05-11 12:05</span>
 </header>
 <div class="gender-bar">
   <div class="gtab active" onclick="setGender('Total')">Total</div>
@@ -285,7 +285,7 @@ function renderMonth(){
   document.getElementById('mk-st').textContent='¥'+fmtM(st);
   document.getElementById('mk-ec').textContent='¥'+fmtM(ec);
   document.getElementById('mk-tot').textContent='¥'+fmtM(tot);
-  document.getElementById('mk-prev').textContent=tot25>0?'¥'+fmtM(tot25):'—';
+  document.getElementById('mk-prev').textContent='¥'+fmtM(tot25);
   document.getElementById('mk-label').textContent=MONTHS_ALL[cm].label;
   document.getElementById('mk-st-yoy').innerHTML=`<span class="${yoyCl(st,st25)}">${yoyStr(st,st25)}</span>`;
   document.getElementById('mk-ec-yoy').innerHTML=`<span class="${yoyCl(ec,ec25)}">${yoyStr(ec,ec25)}</span>`;
@@ -389,14 +389,14 @@ function renderInv(){
   KUBUN_LIST.forEach(k=>{
     const d=catData[k]||{};
     html+=`<tr class="${KUBUN_CSS[k]}"><td>${k}</td>`;
-    TAGS.forEach(t=>{html+=`<td>${(d[t]||0)>0?'¥'+(d[t]||0).toLocaleString():'-'}</td>`});
-    html+=`<td class="total-col">${(d._total||0)>0?'¥'+(d._total||0).toLocaleString():'-'}</td></tr>`;
+    TAGS.forEach(t=>{html+=`<td>¥${(d[t]||0).toLocaleString()}</td>`});
+    html+=`<td class="total-col">¥${(d._total||0).toLocaleString()}</td></tr>`;
   });
   const totals={};
   TAGS.forEach(t=>{totals[t]=KUBUN_LIST.reduce((s,k)=>s+((catData[k]||{})[t]||0),0)});
   const grand=TAGS.reduce((s,t)=>s+totals[t],0);
   html+=`<tr class="total-row"><td>合計</td>`;
-  TAGS.forEach(t=>{html+=`<td class="total-col">${totals[t]>0?'¥'+totals[t].toLocaleString():'-'}</td>`});
+  TAGS.forEach(t=>{html+=`<td class="total-col">¥${totals[t].toLocaleString()}</td>`});
   html+=`<td class="total-col">¥${grand.toLocaleString()}</td></tr>`;
   html+='</tbody></table>';
   catContainer.innerHTML=html;
