@@ -90,12 +90,12 @@ body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f0f2f7;color:#1a1
   <div class="sidebar">
     <div class="sidebar-brand">
       <h1>LYFT</h1>
-      <div class="s-updated">最終更新: 2026-05-11 15:47</div>
+      <div class="s-updated">最終更新: 2026-05-11 15:52</div>
     </div>
     <div class="gender-tabs">
-      <div class="gtab active" onclick="setGender('Total')">Total</div>
-      <div class="gtab" onclick="setGender('M')">M</div>
-      <div class="gtab" onclick="setGender('W')">W</div>
+      <div class="gtab active" data-gender="Total" onclick="setGender('Total')">Total</div>
+      <div class="gtab" data-gender="M" onclick="setGender('M')">Men</div>
+      <div class="gtab" data-gender="W" onclick="setGender('W')">Women</div>
     </div>
     <div class="nav-group">
       <div class="nav-group-title" onclick="toggleNavGroup(this)">週次売上 <span class="toggle-arrow">▼</span></div>
@@ -324,7 +324,7 @@ function setWeek(wk){
 }
 function setGender(g){
   cg=g;
-  document.querySelectorAll('.gtab').forEach(b=>b.classList.toggle('active',b.textContent===g));
+  document.querySelectorAll('.gtab').forEach(b=>b.classList.toggle('active',b.dataset.gender===g));
   renderAll();
   renderMonth();
 }
