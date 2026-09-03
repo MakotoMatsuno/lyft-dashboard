@@ -49,7 +49,10 @@ body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f0f2f7;color:#1a1
 .card h3{font-size:12px;color:#888;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;font-weight:700}
 .card canvas{max-height:260px}
 .section-block{margin-bottom:16px;overflow-x:auto}
-.section-header{color:#444;font-size:12px;font-weight:700;padding:8px 14px;border-radius:8px 8px 0 0;letter-spacing:.5px;background:#eef0f5;border-left:4px solid #9ca3af}
+.section-header{color:#444;font-size:12px;font-weight:700;padding:8px 14px;border-radius:8px 8px 0 0;letter-spacing:.5px;background:#eef0f5;border-left:4px solid #9ca3af;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.export-btn{background:rgba(255,255,255,.85);border:1px solid rgba(0,0,0,.15);border-radius:6px;padding:2px 10px;font-size:10.5px;font-weight:700;color:#333;cursor:pointer;letter-spacing:.3px;flex-shrink:0}
+.export-btn:hover{background:#fff;border-color:#888}
+.card h3{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .bg-store{border-left-color:#4b6bfb}.bg-ec{border-left-color:#8b5cf6}.bg-total{border-left-color:#374151}
 .bg-inv-store{border-left-color:#6b7280}.bg-inv-ec{border-left-color:#9ca3af}.bg-inv-total{border-left-color:#374151}
 .section-table{width:100%;border-collapse:collapse;font-size:11.5px;border:1px solid #dde1ea;border-top:none}
@@ -90,7 +93,7 @@ body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f0f2f7;color:#1a1
   <div class="sidebar">
     <div class="sidebar-brand">
       <h1>LYFT</h1>
-      <div class="s-updated">最終更新: 2026-09-01 10:33</div>
+      <div class="s-updated">最終更新: 2026-09-03 17:00</div>
     </div>
     <div class="gender-tabs">
       <div class="gtab active" data-gender="Total" onclick="setGender('Total')">Total</div>
@@ -169,7 +172,7 @@ body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f0f2f7;color:#1a1
         <div class="inv-kpi-row" id="invKpiRow"></div>
         <div class="chart-grid">
           <div class="card"><h3>週次在庫推移</h3><canvas id="invTrendChart"></canvas></div>
-          <div class="card" style="overflow-x:auto"><h3 id="invCatTitle">中分類別在庫（最新週）</h3><div id="invCatTable"></div></div>
+          <div class="card" style="overflow-x:auto"><h3 id="invCatTitle"><span id="invCatTitleText">中分類別在庫（最新週）</span><button class="export-btn" onclick="exportSection(this)">CSV</button></h3><div id="invCatTable"></div></div>
         </div>
       </div>
     </div>
@@ -209,6 +212,38 @@ function chgStr(cur,prev,pw){
   if(!prev)return '';
   const d=(cur-prev)/prev*100, s=d>=0?'▲':'▼', c=d>=0?'up':'down';
   return `<span class="${c}">${s} ${Math.abs(d).toFixed(1)}% vs ${pw}</span>`;
+}
+
+function tableToCSV(table){
+  const rows=Array.from(table.querySelectorAll('tr'));
+  return rows.map(tr=>Array.from(tr.children).map(cell=>{
+    const text=cell.textContent.replace(/\s+/g,' ').trim().replace(/"/g,'""');
+    return `"${text}"`;
+  }).join(',')).join('
+');
+}
+function downloadCSV(csv, filename){
+  const blob=new Blob([String.fromCharCode(0xFEFF)+csv], {type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url; a.download=filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 1000);
+}
+function currentContextLabel(){
+  const av=document.querySelector('.view.active');
+  if(!av) return 'export';
+  if(av.id==='view-weekly') return `${cw}_${cg}`;
+  if(av.id==='view-monthly') return `${cm.replace('/','-')}_${cg}`;
+  return 'inv';
+}
+function exportSection(btn){
+  const container=btn.closest('.section-block')||btn.closest('.card');
+  const table=container?container.querySelector('table'):null;
+  if(!table){alert('エクスポート対象のテーブルが見つかりません');return;}
+  const labelEl=container.querySelector('.section-header')||container.querySelector('h3');
+  const label=(labelEl?labelEl.textContent:'export').replace(/CSV\s*$/,'').trim().replace(/[\/\]/g,'-');
+  downloadCSV(tableToCSV(table), `${label}_${currentContextLabel()}.csv`);
 }
 
 let tChart, dChart;
@@ -265,7 +300,9 @@ function renderAll(){
     const wrap=document.createElement('div'); wrap.className='section-block';
     const hdr=document.createElement('div');
     hdr.className=`section-header ${BG_CLS[sec.key]||BG_CLS[sec.key.replace('grp_','')]}`;
-    hdr.textContent=sec.label;
+    const hdrLabel=document.createElement('span'); hdrLabel.textContent=sec.label;
+    const hdrBtn=document.createElement('button'); hdrBtn.className='export-btn'; hdrBtn.textContent='CSV'; hdrBtn.onclick=()=>exportSection(hdrBtn);
+    hdr.appendChild(hdrLabel); hdr.appendChild(hdrBtn);
     wrap.appendChild(hdr);
     const tbl=document.createElement('table'); tbl.className='section-table';
     const tr0=tbl.createTHead().insertRow();
@@ -310,7 +347,9 @@ function renderAll(){
     const wrap = document.createElement('div'); wrap.className='section-block';
     const hdr = document.createElement('div');
     hdr.className='section-header bg-total';
-    hdr.textContent='品番別売上ランキング Top30（店舗＋EC合算）';
+    const hdrLabel=document.createElement('span'); hdrLabel.textContent='品番別売上ランキング Top30（店舗＋EC合算）';
+    const hdrBtn=document.createElement('button'); hdrBtn.className='export-btn'; hdrBtn.textContent='CSV'; hdrBtn.onclick=()=>exportSection(hdrBtn);
+    hdr.appendChild(hdrLabel); hdr.appendChild(hdrBtn);
     wrap.appendChild(hdr);
     let html='<table class="section-table"><thead><tr><th style="width:36px">#</th><th style="width:52px">品番</th><th style="text-align:left;min-width:160px">商品名</th><th>店舗売上</th><th style="color:#888;font-size:11px">点数</th><th>EC売上</th><th style="color:#888;font-size:11px">点数</th><th class="total-col">合算売上</th></tr></thead><tbody>';
     ranking.forEach((r,i)=>{
@@ -434,7 +473,10 @@ function renderMonth(){
     const wrap=document.createElement('div'); wrap.className='section-block';
     const hdr=document.createElement('div');
     hdr.className=`section-header ${BG_CLS[bgKey]||'bg-total'}`;
-    hdr.textContent=sec.label; wrap.appendChild(hdr);
+    const hdrLabel=document.createElement('span'); hdrLabel.textContent=sec.label;
+    const hdrBtn=document.createElement('button'); hdrBtn.className='export-btn'; hdrBtn.textContent='CSV'; hdrBtn.onclick=()=>exportSection(hdrBtn);
+    hdr.appendChild(hdrLabel); hdr.appendChild(hdrBtn);
+    wrap.appendChild(hdr);
     const tbl=document.createElement('table'); tbl.className='section-table';
     const tr0=tbl.createTHead().insertRow();
     const th0=document.createElement('th'); th0.textContent='指標'; tr0.appendChild(th0);
@@ -465,7 +507,7 @@ function renderMonth(){
   if(rankData.length===0){
     rankEl.innerHTML='';
   }else{
-    let rHtml=`<div class="section-block"><div class="section-header bg-total" style="background:#1e40af;color:#fff">月間 販売金額 品番ランキング Top10（店舗＋EC合算）</div><table class="section-table"><thead><tr><th>順位</th><th>品番</th><th>商品名</th><th style="text-align:right">店舗売上</th><th style="text-align:right">EC売上</th><th style="text-align:right">合算売上</th><th style="text-align:right">店舗数量</th><th style="text-align:right">EC数量</th></tr></thead><tbody>`;
+    let rHtml=`<div class="section-block"><div class="section-header bg-total" style="background:#1e40af;color:#fff"><span>月間 販売金額 品番ランキング Top10（店舗＋EC合算）</span><button class="export-btn" onclick="exportSection(this)">CSV</button></div><table class="section-table"><thead><tr><th>順位</th><th>品番</th><th>商品名</th><th style="text-align:right">店舗売上</th><th style="text-align:right">EC売上</th><th style="text-align:right">合算売上</th><th style="text-align:right">店舗数量</th><th style="text-align:right">EC数量</th></tr></thead><tbody>`;
     rankData.forEach((item,i)=>{
       rHtml+=`<tr><td style="text-align:center;font-weight:700">${i+1}</td><td style="font-weight:700">${item.hinban}</td><td style="font-size:0.82em;color:#444">${item.name}</td><td style="text-align:right">¥${fmtM(item.store)}</td><td style="text-align:right">¥${fmtM(item.ec)}</td><td style="text-align:right;font-weight:700">¥${fmtM(item.total)}</td><td style="text-align:right">${item.store_qty.toLocaleString()}点</td><td style="text-align:right">${item.ec_qty.toLocaleString()}点</td></tr>`;
     });
@@ -517,7 +559,7 @@ function renderInv(){
 
   const latestWeek=INV_TREND[INV_TREND.length-1].week;
   const catData=INV_CAT[latestWeek]||{};
-  document.getElementById('invCatTitle').textContent=`中分類別在庫（${latestWeek} ${latest.date}）`;
+  document.getElementById('invCatTitleText').textContent=`中分類別在庫（${latestWeek} ${latest.date}）`;
   const catContainer=document.getElementById('invCatTable');
   let html=`<table class="inv-cat-table"><thead><tr><th>区分</th>${TAGS.map(t=>`<th>${t}<br><span style="color:#bbb;font-size:10px">${TLABELS[t]}</span></th>`).join('')}<th class="total-col">合計</th></tr></thead><tbody>`;
   KUBUN_LIST.forEach(k=>{
