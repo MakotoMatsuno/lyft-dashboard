@@ -93,7 +93,7 @@ body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f0f2f7;color:#1a1
   <div class="sidebar">
     <div class="sidebar-brand">
       <h1>LYFT</h1>
-      <div class="s-updated">最終更新: 2026-09-03 17:00</div>
+      <div class="s-updated">最終更新: 2026-09-03 17:01</div>
     </div>
     <div class="gender-tabs">
       <div class="gtab active" data-gender="Total" onclick="setGender('Total')">Total</div>
@@ -219,8 +219,7 @@ function tableToCSV(table){
   return rows.map(tr=>Array.from(tr.children).map(cell=>{
     const text=cell.textContent.replace(/\s+/g,' ').trim().replace(/"/g,'""');
     return `"${text}"`;
-  }).join(',')).join('
-');
+  }).join(',')).join('\r\n');
 }
 function downloadCSV(csv, filename){
   const blob=new Blob([String.fromCharCode(0xFEFF)+csv], {type:'text/csv;charset=utf-8;'});
@@ -242,7 +241,8 @@ function exportSection(btn){
   const table=container?container.querySelector('table'):null;
   if(!table){alert('エクスポート対象のテーブルが見つかりません');return;}
   const labelEl=container.querySelector('.section-header')||container.querySelector('h3');
-  const label=(labelEl?labelEl.textContent:'export').replace(/CSV\s*$/,'').trim().replace(/[\/\]/g,'-');
+  let label=(labelEl?labelEl.textContent:'export').replace(/CSV\s*$/,'').trim();
+  label=label.split('/').join('-').split('\\').join('-');
   downloadCSV(tableToCSV(table), `${label}_${currentContextLabel()}.csv`);
 }
 
